@@ -10,8 +10,8 @@ import javax.mail.internet.MimeMessage;
 
 public class EmailService {
 
-    private static final String SENDER_EMAIL = "ayushiphonephotos@gmail.com";
-    private static final String SENDER_PASSWORD = "wwzpltqijpzlvclv";
+    private static final String SENDER_EMAIL = System.getenv("EMAIL_USER");
+    private static final String SENDER_PASSWORD = System.getenv("EMAIL_PASS");
     private static final String SMTP_HOST = "smtp.gmail.com";
     private static final String SMTP_PORT = "587";
 
@@ -30,6 +30,11 @@ public class EmailService {
     }
 
     private static void sendEmail(String to, String subject, String body) {
+        if (SENDER_EMAIL == null || SENDER_PASSWORD == null) {
+            System.out.println("Email credentials not set. Please set EMAIL_USER and EMAIL_PASS environment variables.");
+            return;
+        }
+
         try {
             Properties props = new Properties();
             props.put("mail.smtp.host", SMTP_HOST);
